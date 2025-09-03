@@ -1,0 +1,38 @@
+[
+  {
+    "Id": 1,
+    "type": "task_completed",
+    "description": "Mike Davis completed 'Workflow Automation' task",
+    "timestamp": "2024-01-15T14:30:00Z"
+  },
+  {
+    "Id": 2,
+    "type": "task_created",
+    "description": "New task 'System Security Update' assigned to John Smith",
+    "timestamp": "2024-01-15T13:45:00Z"
+  },
+  {
+    "Id": 3,
+    "type": "item_updated",
+    "description": "CNC Machine #5 maintenance record updated",
+    "timestamp": "2024-01-15T12:15:00Z"
+  },
+  {
+    "Id": 4,
+    "type": "system_alert",
+    "description": "Production Management System scheduled maintenance reminder",
+    "timestamp": "2024-01-15T11:30:00Z"
+  },
+  {
+    "Id": 5,
+    "type": "task_updated",
+    "description": "Equipment Calibration task status changed to 'in-progress'",
+    "timestamp": "2024-01-15T10:20:00Z"
+  },
+  {
+    "Id": 6,
+    "type": "item_added",
+    "description": "New team member added to Operations Team Alpha",
+    "timestamp": "2024-01-15T09:45:00Z"
+  }
+]

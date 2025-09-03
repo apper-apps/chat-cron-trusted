@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "title": "System Security Update",
+    "category": "react",
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2024-01-20T00:00:00Z",
+    "description": "Urgent security patches needed for production servers",
+    "assignee": "John Smith"
+  },
+  {
+    "Id": 2,
+    "title": "Database Maintenance",
+    "category": "maintain",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": "2024-01-25T00:00:00Z",
+    "description": "Regular database optimization and cleanup",
+    "assignee": "Sarah Johnson"
+  },
+  {
+    "Id": 3,
+    "title": "Workflow Automation",
+    "category": "improve",
+    "status": "completed",
+    "priority": "medium",
+    "dueDate": "2024-01-15T00:00:00Z",
+    "description": "Implement automated reporting system",
+    "assignee": "Mike Davis"
+  },
+  {
+    "Id": 4,
+    "title": "Emergency Response Plan",
+    "category": "react",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": "2024-01-18T00:00:00Z",
+    "description": "Update emergency procedures for system failures",
+    "assignee": "Lisa Chen"
+  },
+  {
+    "Id": 5,
+    "title": "Equipment Calibration",
+    "category": "maintain",
+    "status": "in-progress",
+    "priority": "medium",
+    "dueDate": "2024-01-22T00:00:00Z",
+    "description": "Monthly calibration of production equipment",
+    "assignee": "Tom Wilson"
+  },
+  {
+    "Id": 6,
+    "title": "Process Optimization",
+    "category": "improve",
+    "status": "pending",
+    "priority": "low",
+    "dueDate": "2024-01-30T00:00:00Z",
+    "description": "Analyze and improve current operational processes",
+    "assignee": "Emma Brown"
+  }
+]

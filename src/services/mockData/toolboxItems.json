@@ -1,0 +1,86 @@
+[
+  {
+    "Id": 1,
+    "name": "Quality Control Process",
+    "type": "process",
+    "status": "active",
+    "lastUpdated": "2024-01-15T10:30:00Z",
+    "description": "Standard operating procedure for quality control checks",
+    "metadata": {
+      "version": "2.1",
+      "owner": "Quality Team"
+    }
+  },
+  {
+    "Id": 2,
+    "name": "Production Management System",
+    "type": "system",
+    "status": "active",
+    "lastUpdated": "2024-01-14T14:20:00Z",
+    "description": "Integrated system for managing production workflows",
+    "metadata": {
+      "version": "4.2.1",
+      "uptime": "99.8%"
+    }
+  },
+  {
+    "Id": 3,
+    "name": "CNC Machine #5",
+    "type": "equipment",
+    "status": "active",
+    "lastUpdated": "2024-01-15T09:15:00Z",
+    "description": "High-precision CNC machine for component manufacturing",
+    "metadata": {
+      "model": "DMG MORI NLX2500",
+      "lastMaintenance": "2024-01-10"
+    }
+  },
+  {
+    "Id": 4,
+    "name": "Inventory Management Software",
+    "type": "software",
+    "status": "active",
+    "lastUpdated": "2024-01-13T16:45:00Z",
+    "description": "ERP module for inventory tracking and management",
+    "metadata": {
+      "version": "3.8.2",
+      "license": "Enterprise"
+    }
+  },
+  {
+    "Id": 5,
+    "name": "Operations Team Alpha",
+    "type": "team",
+    "status": "active",
+    "lastUpdated": "2024-01-15T11:00:00Z",
+    "description": "Primary operations team responsible for daily production",
+    "metadata": {
+      "members": 8,
+      "lead": "John Smith"
+    }
+  },
+  {
+    "Id": 6,
+    "name": "Automated Quality Inspection",
+    "type": "idea",
+    "status": "inactive",
+    "lastUpdated": "2024-01-12T13:30:00Z",
+    "description": "Implementation of AI-powered quality inspection system",
+    "metadata": {
+      "proposedBy": "Mike Davis",
+      "estimatedROI": "25%"
+    }
+  },
+  {
+    "Id": 7,
+    "name": "Q1 Safety Review",
+    "type": "event",
+    "status": "active",
+    "lastUpdated": "2024-01-15T08:00:00Z",
+    "description": "Quarterly safety procedures review and training session",
+    "metadata": {
+      "date": "2024-01-30",
+      "attendees": 24
+    }
+  }
+]

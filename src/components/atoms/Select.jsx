@@ -1,0 +1,41 @@
+import React, { forwardRef } from "react"
+import { cn } from "@/utils/cn"
+
+const Select = forwardRef(({ 
+  className,
+  label,
+  error,
+  children,
+  ...props 
+}, ref) => {
+  return (
+    <div className="space-y-1">
+      {label && (
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {label}
+        </label>
+      )}
+      <select
+        className={cn(
+          "flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm transition-colors",
+          "focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          "dark:border-gray-600 dark:bg-dark-card dark:text-gray-100",
+          error && "border-red-500 focus:ring-red-500/50 focus:border-red-500",
+          className
+        )}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </select>
+      {error && (
+        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+      )}
+    </div>
+  )
+})
+
+Select.displayName = "Select"
+
+export default Select

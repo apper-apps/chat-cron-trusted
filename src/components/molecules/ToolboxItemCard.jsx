@@ -1,0 +1,83 @@
+import React from "react"
+import ApperIcon from "@/components/ApperIcon"
+import Badge from "@/components/atoms/Badge"
+import Button from "@/components/atoms/Button"
+import Card from "@/components/atoms/Card"
+import { format } from "date-fns"
+
+const ToolboxItemCard = ({ item, onEdit, onDelete, onToggleStatus }) => {
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case "process": return "GitBranch"
+      case "system": return "Server"
+      case "equipment": return "Wrench"
+      case "software": return "Code"
+      case "team": return "Users"
+      case "idea": return "Lightbulb"
+      case "event": return "Calendar"
+      default: return "Circle"
+    }
+  }
+
+  return (
+    <Card className="p-6 hover:shadow-lg transition-all duration-200 transform hover:scale-[1.02]">
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center space-x-3">
+          <div className="p-3 bg-primary/10 rounded-lg">
+            <ApperIcon name={getTypeIcon(item.type)} className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+              {item.name}
+            </h4>
+            <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
+              {item.type}
+            </p>
+          </div>
+        </div>
+        
+        <Badge variant={item.status === "active" ? "success" : "default"} size="sm">
+          {item.status}
+        </Badge>
+      </div>
+      
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        {item.description}
+      </p>
+      
+      <div className="flex items-center justify-between">
+        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+          <ApperIcon name="Clock" className="w-4 h-4 mr-1" />
+          Updated {format(new Date(item.lastUpdated), "MMM dd, yyyy")}
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => onToggleStatus(item.Id)}
+          >
+            <ApperIcon name={item.status === "active" ? "Pause" : "Play"} className="w-4 h-4" />
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => onEdit(item)}
+          >
+            <ApperIcon name="Edit2" className="w-4 h-4" />
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => onDelete(item.Id)}
+            className="text-red-600 hover:text-red-700 dark:text-red-400"
+          >
+            <ApperIcon name="Trash2" className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+    </Card>
+  )
+}
+
+export default ToolboxItemCard
