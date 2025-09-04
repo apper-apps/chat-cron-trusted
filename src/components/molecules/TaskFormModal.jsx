@@ -172,6 +172,9 @@ const handleSubmit = async (e) => {
     setLoading(true)
     
     try {
+      // Capture SOP URLs before any form operations to prevent timing issues
+      const sopUrlsToSave = formData.related_sops && formData.related_sops.length > 0 ? [...formData.related_sops] : [];
+      
       // Format due date for API
 const taskData = {
         ...formData,
@@ -196,6 +199,14 @@ let result
         toast.success('Task created successfully!')
       }
       
+      // Save SOP URLs to database for both create and update operations
+      if (sopUrlsToSave.length > 0) {
+        const taskId = newTask.Id || result?.id || editingTask?.Id;
+        if (taskId) {
+          await saveSopUrls(taskId);
+        }
+      }
+      
       // Reset form only if creating (not editing)
       if (!editingTask) {
 setFormData({
@@ -209,11 +220,6 @@ setFormData({
           related_processes: [],
           related_sops: []
         })
-        
-        // Save SOP URLs to database if any were added
-        if (formData.related_sops && formData.related_sops.length > 0) {
-          await saveSopUrls(newTask.Id || result?.id)
-        }
       }
       setComment('')
       setErrors({})
