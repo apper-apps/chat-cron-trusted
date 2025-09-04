@@ -44,11 +44,11 @@ const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   useEffect(() => {
     let filtered = tasks
 
-    if (searchTerm) {
+if (searchTerm) {
       filtered = filtered.filter(task =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.assignee.toLowerCase().includes(searchTerm.toLowerCase())
+        task.title_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.description_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.assignee_c?.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
 
@@ -93,11 +93,11 @@ const handleEditTask = (task) => {
   if (loading) return <Loading />
   if (error) return <Error message={error} onRetry={loadTasks} />
 
-  const getTaskStats = () => {
+const getTaskStats = () => {
     const total = tasks.length
-    const completed = tasks.filter(task => task.status === "completed").length
-    const inProgress = tasks.filter(task => task.status === "in-progress").length
-    const pending = tasks.filter(task => task.status === "pending").length
+    const completed = tasks.filter(task => task.status_c === "completed").length
+    const inProgress = tasks.filter(task => task.status_c === "in-progress").length
+    const pending = tasks.filter(task => task.status_c === "pending").length
     
     return { total, completed, inProgress, pending }
   }

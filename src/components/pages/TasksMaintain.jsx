@@ -65,8 +65,8 @@ const handleEditTask = (task) => {
 
   const activeTasks = tasks.filter(task => task.status !== "completed")
   const completedTasks = tasks.filter(task => task.status === "completed")
-  const overdueTasksCount = tasks.filter(task => 
-    new Date(task.dueDate) < new Date() && task.status !== "completed"
+const overdueTasksCount = tasks.filter(task => 
+    new Date(task.due_date_c) < new Date() && task.status_c !== "completed"
   ).length
 
   return (
