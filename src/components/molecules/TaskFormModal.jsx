@@ -60,33 +60,60 @@ const [newProcess, setNewProcess] = useState('')
   };
 
   // Update form data when editingTask changes
-React.useEffect(() => {
-    if (editingTask) {
-      setFormData({
-        title_c: editingTask.title_c || '',
-        assignee_c: editingTask.assignee_c || '',
-        due_date_c: editingTask.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 16) : '',
-        priority_c: editingTask.priority_c || 'medium',
-        category_c: editingTask.category_c || initialCategory,
-        task_type_c: editingTask.task_type_c || 'One-off',
-        description_c: editingTask.description_c || '',
-        related_processes: [],
-        related_sops: [] // Will be loaded from database if needed
-      })
-    } else {
-      setFormData({
-        title_c: '',
-        assignee_c: '',
-        due_date_c: '',
-        priority_c: 'medium',
-        category_c: initialCategory,
-        task_type_c: 'One-off',
-        description_c: '',
-        related_processes: [],
-        related_sops: []
-      })
+// Function to load existing SOP URLs for editing tasks
+  const loadExistingSops = async (taskId) => {
+    try {
+      const existingSops = await sopUrlService.getByTask(taskId);
+      
+      // Transform database format to form format
+      const formattedSops = existingSops.map(sop => ({
+        url: sop.url_c || sop.Name || '',
+        description: sop.description_c || ''
+      }));
+      
+      return formattedSops;
+    } catch (error) {
+      console.error('Error loading existing SOP URLs:', error);
+      toast.error('Failed to load existing SOP URLs');
+      return [];
     }
-  }, [editingTask, initialCategory])
+  };
+
+  // Update form data when editingTask changes
+  React.useEffect(() => {
+    const initializeFormData = async () => {
+      if (editingTask) {
+        // Load existing SOP URLs for the task
+        const existingSops = editingTask.Id ? await loadExistingSops(editingTask.Id) : [];
+        
+        setFormData({
+          title_c: editingTask.title_c || '',
+          assignee_c: editingTask.assignee_c || '',
+          due_date_c: editingTask.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 16) : '',
+          priority_c: editingTask.priority_c || 'medium',
+          category_c: editingTask.category_c || initialCategory,
+          task_type_c: editingTask.task_type_c || 'One-off',
+          description_c: editingTask.description_c || '',
+          related_processes: [],
+          related_sops: existingSops
+        });
+      } else {
+        setFormData({
+          title_c: '',
+          assignee_c: '',
+          due_date_c: '',
+          priority_c: 'medium',
+          category_c: initialCategory,
+          task_type_c: 'One-off',
+          description_c: '',
+          related_processes: [],
+          related_sops: []
+        });
+      }
+    };
+
+    initializeFormData();
+  }, [editingTask, initialCategory]);
   const validateForm = () => {
     const newErrors = {}
     

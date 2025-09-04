@@ -37,8 +37,7 @@ const TaskItem = ({ task, onEdit, onDelete, onToggleStatus }) => {
     className="bg-white dark:bg-dark-surface rounded-lg p-4 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-200">
     <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-                <ApperIcon name={getCategoryIcon(task.category)} className="w-4 h-4 text-primary" />
+<div className="p-2 bg-primary/10 rounded-lg">
                 <ApperIcon name={getCategoryIcon(task.category_c)} className="w-4 h-4 text-primary" />
             </div>
             <div>
