@@ -1,29 +1,30 @@
-import { createContext, useEffect, useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { ToastContainer } from "react-toastify"
-import { setUser, clearUser } from '@/store/userSlice'
-import { ThemeProvider } from "@/hooks/useTheme"
-import Layout from "@/components/organisms/Layout"
-import Dashboard from "@/components/pages/Dashboard"
-import TasksOverview from "@/components/pages/TasksOverview"
-import TasksReact from "@/components/pages/TasksReact"
-import TasksMaintain from "@/components/pages/TasksMaintain"
-import TasksImprove from "@/components/pages/TasksImprove"
-import ToolboxProcesses from "@/components/pages/ToolboxProcesses"
-import ToolboxSystems from "@/components/pages/ToolboxSystems"
-import ToolboxEquipment from "@/components/pages/ToolboxEquipment"
-import ToolboxSoftware from "@/components/pages/ToolboxSoftware"
-import ToolboxTeam from "@/components/pages/ToolboxTeam"
-import ToolboxIdeas from "@/components/pages/ToolboxIdeas"
-import ToolboxEvents from "@/components/pages/ToolboxEvents"
-import Reports from "@/components/pages/Reports"
-import Login from '@/components/pages/Login'
-import Signup from '@/components/pages/Signup'
-import Callback from '@/components/pages/Callback'
-import ErrorPage from '@/components/pages/ErrorPage'
-import ResetPassword from '@/components/pages/ResetPassword'
-import PromptPassword from '@/components/pages/PromptPassword'
+import React, { createContext, useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "@/index.css";
+import Layout from "@/components/organisms/Layout";
+import ToolboxIdeas from "@/components/pages/ToolboxIdeas";
+import TasksReact from "@/components/pages/TasksReact";
+import ToolboxEquipment from "@/components/pages/ToolboxEquipment";
+import ToolboxSoftware from "@/components/pages/ToolboxSoftware";
+import ResetPassword from "@/components/pages/ResetPassword";
+import PromptPassword from "@/components/pages/PromptPassword";
+import Reports from "@/components/pages/Reports";
+import Signup from "@/components/pages/Signup";
+import ToolboxEvents from "@/components/pages/ToolboxEvents";
+import TasksImprove from "@/components/pages/TasksImprove";
+import ToolboxTeam from "@/components/pages/ToolboxTeam";
+import TasksMaintain from "@/components/pages/TasksMaintain";
+import Dashboard from "@/components/pages/Dashboard";
+import ToolboxSystems from "@/components/pages/ToolboxSystems";
+import TasksOverview from "@/components/pages/TasksOverview";
+import ErrorPage from "@/components/pages/ErrorPage";
+import Callback from "@/components/pages/Callback";
+import ToolboxProcesses from "@/components/pages/ToolboxProcesses";
+import Login from "@/components/pages/Login";
+import { clearUser, setUser } from "@/store/userSlice";
+import { ThemeProvider } from "@/hooks/useTheme";
 
 // Create auth context
 export const AuthContext = createContext(null)
@@ -47,7 +48,7 @@ function App() {
     })
     
     // Initialize but don't show login yet
-    ApperUI.setup(client, {
+ApperUI.setup(client, {
       target: '#authentication',
       clientId: import.meta.env.VITE_APPER_PROJECT_ID,
       view: 'both',
@@ -55,27 +56,27 @@ function App() {
         setIsInitialized(true)
         // CRITICAL: This exact currentPath logic must be preserved in all implementations
         // DO NOT simplify or modify this pattern as it ensures proper redirection flow
-        let currentPath = window.location.pathname + window.location.search
-        let redirectPath = new URLSearchParams(window.location.search).get('redirect')
+        let currentPath = window.location.pathname + window.location.search;
+        let redirectPath = new URLSearchParams(window.location.search).get('redirect');
         const isAuthPage = currentPath.includes('/login') || currentPath.includes('/signup') || 
                            currentPath.includes('/callback') || currentPath.includes('/error') || 
-                           currentPath.includes('/prompt-password') || currentPath.includes('/reset-password')
+                           currentPath.includes('/prompt-password') || currentPath.includes('/reset-password');
         
         if (user) {
           // User is authenticated
           if (redirectPath) {
-            navigate(redirectPath)
+            navigate(redirectPath);
           } else if (!isAuthPage) {
             if (!currentPath.includes('/login') && !currentPath.includes('/signup')) {
-              navigate(currentPath)
+              navigate(currentPath);
             } else {
-              navigate('/dashboard')
+              navigate('/');
             }
           } else {
-            navigate('/dashboard')
+            navigate('/');
           }
           // Store user information in Redux
-          dispatch(setUser(JSON.parse(JSON.stringify(user))))
+          dispatch(setUser(JSON.parse(JSON.stringify(user))));
         } else {
           // User is not authenticated
           if (!isAuthPage) {
@@ -85,25 +86,25 @@ function App() {
                 : currentPath.includes('/login')
                 ? `/login?redirect=${currentPath}`
                 : '/login'
-            )
+            );
           } else if (redirectPath) {
             if (
               !['error', 'signup', 'login', 'callback', 'prompt-password', 'reset-password'].some((path) => currentPath.includes(path))
             ) {
-              navigate(`/login?redirect=${redirectPath}`)
+              navigate(`/login?redirect=${redirectPath}`);
             } else {
-              navigate(currentPath)
+              navigate(currentPath);
             }
           } else if (isAuthPage) {
-            navigate(currentPath)
+            navigate(currentPath);
           } else {
-            navigate('/login')
+            navigate('/login');
           }
-          dispatch(clearUser())
+          dispatch(clearUser());
         }
-      },
+},
       onError: function(error) {
-        console.error("Authentication failed:", error)
+        console.error("Authentication failed:", error);
       }
     })
   }, []) // No props and state should be bound

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 import ApperIcon from "@/components/ApperIcon"
 import MetricCard from "@/components/molecules/MetricCard"
 import ActivityItem from "@/components/molecules/ActivityItem"
