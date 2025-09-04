@@ -10,9 +10,9 @@ import Card from "@/components/atoms/Card";
 
 const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '', editingTask = null }) => {
 const [formData, setFormData] = useState({
-    title_c: editingTask?.title_c || '',
+title_c: editingTask?.title_c || '',
     assignee_c: editingTask?.assignee_c || '',
-    due_date_c: editingTask?.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 16) : '',
+    due_date_c: editingTask?.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 19) : '',
     priority_c: editingTask?.priority_c || 'medium',
     category_c: editingTask?.category_c || initialCategory,
     task_type_c: editingTask?.task_type_c || 'One-off',
@@ -86,10 +86,10 @@ const [newProcess, setNewProcess] = useState('')
         // Load existing SOP URLs for the task
         const existingSops = editingTask.Id ? await loadExistingSops(editingTask.Id) : [];
         
-        setFormData({
+setFormData({
           title_c: editingTask.title_c || '',
           assignee_c: editingTask.assignee_c || '',
-          due_date_c: editingTask.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 16) : '',
+          due_date_c: editingTask.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 19) : '',
           priority_c: editingTask.priority_c || 'medium',
           category_c: editingTask.category_c || initialCategory,
           task_type_c: editingTask.task_type_c || 'One-off',
