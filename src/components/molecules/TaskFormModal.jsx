@@ -12,7 +12,7 @@ const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '', e
 const [formData, setFormData] = useState({
 title_c: editingTask?.title_c || '',
     assignee_c: editingTask?.assignee_c || '',
-    due_date_c: editingTask?.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 19) : '',
+    due_date_c: editingTask?.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 10) : '',
     priority_c: editingTask?.priority_c || 'medium',
     category_c: editingTask?.category_c || initialCategory,
     task_type_c: editingTask?.task_type_c || 'One-off',
@@ -80,7 +80,7 @@ const [newProcess, setNewProcess] = useState('')
   };
 
   // Update form data when editingTask changes
-  React.useEffect(() => {
+React.useEffect(() => {
     const initializeFormData = async () => {
       if (editingTask) {
         // Load existing SOP URLs for the task
@@ -89,7 +89,7 @@ const [newProcess, setNewProcess] = useState('')
 setFormData({
           title_c: editingTask.title_c || '',
           assignee_c: editingTask.assignee_c || '',
-          due_date_c: editingTask.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 19) : '',
+          due_date_c: editingTask.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 10) : '',
           priority_c: editingTask.priority_c || 'medium',
           category_c: editingTask.category_c || initialCategory,
           task_type_c: editingTask.task_type_c || 'One-off',
