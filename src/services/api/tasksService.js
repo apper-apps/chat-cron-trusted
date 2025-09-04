@@ -12,7 +12,7 @@ class TasksService {
   async getAll() {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
           { field: { Name: "title_c" } },
@@ -21,7 +21,8 @@ class TasksService {
           { field: { Name: "priority_c" } },
           { field: { Name: "due_date_c" } },
           { field: { Name: "description_c" } },
-          { field: { Name: "assignee_c" } }
+          { field: { Name: "assignee_c" } },
+          { field: { Name: "task_type_c" } }
         ],
         pagingInfo: {
           limit: 100,
@@ -55,7 +56,7 @@ class TasksService {
   async getById(id) {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
           { field: { Name: "title_c" } },
@@ -64,7 +65,8 @@ class TasksService {
           { field: { Name: "priority_c" } },
           { field: { Name: "due_date_c" } },
           { field: { Name: "description_c" } },
-          { field: { Name: "assignee_c" } }
+          { field: { Name: "assignee_c" } },
+          { field: { Name: "task_type_c" } }
         ]
       }
       
@@ -94,7 +96,7 @@ class TasksService {
   async getByCategory(category) {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
           { field: { Name: "title_c" } },
@@ -103,7 +105,8 @@ class TasksService {
           { field: { Name: "priority_c" } },
           { field: { Name: "due_date_c" } },
           { field: { Name: "description_c" } },
-          { field: { Name: "assignee_c" } }
+          { field: { Name: "assignee_c" } },
+          { field: { Name: "task_type_c" } }
         ],
         where: [
           {
@@ -198,7 +201,7 @@ async create(data) {
         records: [
           {
             Id: parseInt(id),
-            // Only include Updateable fields that are being updated
+// Only include Updateable fields that are being updated
             ...(data.Name !== undefined && { Name: data.Name }),
             ...(data.Tags !== undefined && { Tags: data.Tags }),
             ...(data.title_c !== undefined && { title_c: data.title_c }),
@@ -207,7 +210,8 @@ async create(data) {
             ...(data.priority_c !== undefined && { priority_c: data.priority_c }),
             ...(data.due_date_c !== undefined && { due_date_c: data.due_date_c }),
             ...(data.description_c !== undefined && { description_c: data.description_c }),
-            ...(data.assignee_c !== undefined && { assignee_c: data.assignee_c })
+            ...(data.assignee_c !== undefined && { assignee_c: data.assignee_c }),
+            ...(data.task_type_c !== undefined && { task_type_c: data.task_type_c })
           }
         ]
       }
