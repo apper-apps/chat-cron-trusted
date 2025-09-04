@@ -1,11 +1,12 @@
-import React, { useContext } from "react"
-import { AuthContext } from '@/App'
-import ApperIcon from "@/components/ApperIcon"
-import Button from "@/components/atoms/Button"
-import { useTheme } from "@/hooks/useTheme"
+import React, { useContext } from "react";
+import { AuthContext } from "@/App";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import { useTheme } from "@/hooks/useTheme";
 
 const Header = ({ sidebarOpen, setSidebarOpen }) => {
   const { isDarkMode, toggleTheme } = useTheme()
+  const authMethods = useContext(AuthContext)
 
   return (
     <header className="bg-white dark:bg-dark-surface shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
@@ -65,8 +66,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
             variant="ghost"
             size="sm"
 className="p-2"
-            onClick={async () => {
-              const authMethods = useContext(AuthContext)
+onClick={async () => {
               if (authMethods?.logout) {
                 authMethods.logout()
               }
