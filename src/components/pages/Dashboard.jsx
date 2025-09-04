@@ -46,7 +46,10 @@ const Dashboard = () => {
   if (loading) return <Loading />
   if (error) return <Error message={error} onRetry={loadDashboardData} />
 
-  const getMetricIcon = (name) => {
+const getMetricIcon = (name) => {
+    if (!name || typeof name !== 'string') {
+      return "Activity"
+    }
     switch (name.toLowerCase()) {
       case "active tasks": return "CheckSquare"
       case "completion rate": return "TrendingUp"
