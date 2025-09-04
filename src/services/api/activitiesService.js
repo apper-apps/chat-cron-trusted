@@ -147,4 +147,3 @@ class ActivitiesService {
 }
 
 export default new ActivitiesService()
-export default new ActivitiesService()

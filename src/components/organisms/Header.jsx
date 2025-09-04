@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import { AuthContext } from '@/App'
 import ApperIcon from "@/components/ApperIcon"
 import Button from "@/components/atoms/Button"
 import { useTheme } from "@/hooks/useTheme"
@@ -63,10 +64,9 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
           <Button
             variant="ghost"
             size="sm"
-            className="p-2"
+className="p-2"
             onClick={async () => {
-              const { AuthContext } = await import('@/App')
-              const authMethods = React.useContext(AuthContext)
+              const authMethods = useContext(AuthContext)
               if (authMethods?.logout) {
                 authMethods.logout()
               }
