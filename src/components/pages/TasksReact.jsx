@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import ApperIcon from "@/components/ApperIcon"
+import TaskFormModal from "@/components/molecules/TaskFormModal"
 import TaskItem from "@/components/molecules/TaskItem"
 import Card from "@/components/atoms/Card"
 import Button from "@/components/atoms/Button"
@@ -10,6 +11,7 @@ import { toast } from "react-toastify"
 import tasksService from "@/services/api/tasksService"
 
 const TasksReact = () => {
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -80,10 +82,20 @@ const TasksReact = () => {
             Urgent response tasks requiring immediate attention
           </p>
         </div>
-        <Button>
+<Button onClick={() => setIsTaskModalOpen(true)}>
           <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
           New React Task
         </Button>
+        
+        <TaskFormModal
+          isOpen={isTaskModalOpen}
+          onClose={() => setIsTaskModalOpen(false)}
+          initialCategory="react"
+          onTaskCreated={() => {
+            // Refresh react tasks after creation
+            loadReactTasks()
+          }}
+        />
       </div>
 
       {/* Alert Banner for Urgent Tasks */}

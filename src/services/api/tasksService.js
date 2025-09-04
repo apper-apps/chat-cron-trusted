@@ -137,7 +137,7 @@ class TasksService {
     }
   }
 
-  async create(data) {
+async create(data) {
     try {
       const params = {
         records: [
@@ -151,7 +151,8 @@ class TasksService {
             priority_c: data.priority_c || data.priority || 'medium',
             due_date_c: data.due_date_c || data.dueDate || new Date().toISOString(),
             description_c: data.description_c || data.description || '',
-            assignee_c: data.assignee_c || data.assignee || ''
+            assignee_c: data.assignee_c || data.assignee || '',
+            task_type_c: data.task_type_c || data.taskType || 'One-off'
           }
         ]
       }

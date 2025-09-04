@@ -1,0 +1,358 @@
+import React, { useState } from 'react'
+import ApperIcon from '@/components/ApperIcon'
+import Input from '@/components/atoms/Input'
+import Select from '@/components/atoms/Select'
+import Button from '@/components/atoms/Button'
+import Card from '@/components/atoms/Card'
+import { toast } from 'react-toastify'
+import tasksService from '@/services/api/tasksService'
+
+const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '' }) => {
+  const [formData, setFormData] = useState({
+    title_c: '',
+    assignee_c: '',
+    due_date_c: '',
+    priority_c: 'medium',
+    category_c: initialCategory,
+    task_type_c: 'One-off',
+    description_c: '',
+    related_processes: [],
+    related_sops: []
+  })
+  
+  const [loading, setLoading] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [newProcess, setNewProcess] = useState('')
+  const [newSop, setNewSop] = useState('')
+  const [comment, setComment] = useState('')
+
+  const validateForm = () => {
+    const newErrors = {}
+    
+    if (!formData.title_c.trim()) {
+      newErrors.title_c = 'Title is required'
+    }
+    
+    if (!formData.assignee_c.trim()) {
+      newErrors.assignee_c = 'Assignee is required'
+    }
+    
+    if (!formData.due_date_c) {
+      newErrors.due_date_c = 'Due date is required'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }))
+    }
+  }
+
+  const handleAddProcess = () => {
+    if (newProcess.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        related_processes: [...prev.related_processes, newProcess.trim()]
+      }))
+      setNewProcess('')
+    }
+  }
+
+  const handleRemoveProcess = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      related_processes: prev.related_processes.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleAddSop = () => {
+    if (newSop.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        related_sops: [...prev.related_sops, newSop.trim()]
+      }))
+      setNewSop('')
+    }
+  }
+
+  const handleRemoveSop = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      related_sops: prev.related_sops.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (!validateForm()) {
+      toast.error('Please fix the errors in the form')
+      return
+    }
+    
+    setLoading(true)
+    
+    try {
+      // Format due date for API
+      const taskData = {
+        ...formData,
+        due_date_c: new Date(formData.due_date_c).toISOString(),
+        status_c: 'pending'
+      }
+      
+      const newTask = await tasksService.create(taskData)
+      
+      toast.success('Task created successfully!')
+      
+      // Reset form
+      setFormData({
+        title_c: '',
+        assignee_c: '',
+        due_date_c: '',
+        priority_c: 'medium',
+        category_c: initialCategory,
+        task_type_c: 'One-off',
+        description_c: '',
+        related_processes: [],
+        related_sops: []
+      })
+      setComment('')
+      setErrors({})
+      
+      // Notify parent component
+      if (onTaskCreated) {
+        onTaskCreated(newTask)
+      }
+      
+      onClose()
+    } catch (error) {
+      console.error('Error creating task:', error)
+      toast.error(error.message || 'Failed to create task')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-dark-surface rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Create New Task</h2>
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <ApperIcon name="X" className="w-5 h-5" />
+          </Button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-8">
+          {/* Section 1: Task Data */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+              <ApperIcon name="CheckSquare" className="w-5 h-5 mr-2 text-primary" />
+              Task Data
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="Title *"
+                value={formData.title_c}
+                onChange={(e) => handleInputChange('title_c', e.target.value)}
+                error={errors.title_c}
+                placeholder="Enter task title"
+              />
+              
+              <Input
+                label="Assignee *"
+                value={formData.assignee_c}
+                onChange={(e) => handleInputChange('assignee_c', e.target.value)}
+                error={errors.assignee_c}
+                placeholder="Enter assignee name"
+              />
+              
+              <Input
+                type="date"
+                label="Due Date *"
+                value={formData.due_date_c}
+                onChange={(e) => handleInputChange('due_date_c', e.target.value)}
+                error={errors.due_date_c}
+              />
+              
+              <Select
+                label="Priority"
+                value={formData.priority_c}
+                onChange={(e) => handleInputChange('priority_c', e.target.value)}
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </Select>
+              
+              <Select
+                label="Category"
+                value={formData.category_c}
+                onChange={(e) => handleInputChange('category_c', e.target.value)}
+              >
+                <option value="">Select Category</option>
+                <option value="react">React</option>
+                <option value="maintain">Maintain</option>
+                <option value="improve">Improve</option>
+              </Select>
+              
+              <Select
+                label="Task Type"
+                value={formData.task_type_c}
+                onChange={(e) => handleInputChange('task_type_c', e.target.value)}
+              >
+                <option value="One-off">One-off</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Repeated">Repeated</option>
+              </Select>
+            </div>
+          </div>
+          
+          {/* Section 2: Task Information */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+              <ApperIcon name="FileText" className="w-5 h-5 mr-2 text-primary" />
+              Task Information
+            </h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Description
+                </label>
+                <textarea
+                  className="w-full h-32 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary dark:border-gray-600 dark:bg-dark-card dark:text-gray-100 resize-none"
+                  value={formData.description_c}
+                  onChange={(e) => handleInputChange('description_c', e.target.value)}
+                  placeholder="Enter task description"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Related Processes
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <Input
+                    value={newProcess}
+                    onChange={(e) => setNewProcess(e.target.value)}
+                    placeholder="Add a process"
+                    className="flex-1"
+                  />
+                  <Button type="button" size="sm" onClick={handleAddProcess}>
+                    <ApperIcon name="Plus" className="w-4 h-4" />
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.related_processes.map((process, index) => (
+                    <div key={index} className="flex items-center bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full text-sm">
+                      <span>{process}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveProcess(index)}
+                        className="ml-2 text-gray-500 hover:text-red-500"
+                      >
+                        <ApperIcon name="X" className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Related SOP URLs
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <Input
+                    type="url"
+                    value={newSop}
+                    onChange={(e) => setNewSop(e.target.value)}
+                    placeholder="Enter SOP URL"
+                    className="flex-1"
+                  />
+                  <Button type="button" size="sm" onClick={handleAddSop}>
+                    <ApperIcon name="Plus" className="w-4 h-4" />
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {formData.related_sops.map((sop, index) => (
+                    <div key={index} className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                      <a href={sop} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate">
+                        {sop}
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSop(index)}
+                        className="ml-2 text-gray-500 hover:text-red-500"
+                      >
+                        <ApperIcon name="Trash2" className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Section 3: Comments and Updates */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+              <ApperIcon name="MessageSquare" className="w-5 h-5 mr-2 text-primary" />
+              Comments and Updates
+            </h3>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Initial Comment
+              </label>
+              <textarea
+                className="w-full h-24 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary dark:border-gray-600 dark:bg-dark-card dark:text-gray-100 resize-none"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Add an initial comment (optional)"
+              />
+            </div>
+          </div>
+          
+          {/* Form Actions */}
+          <div className="flex justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <Button type="button" variant="ghost" onClick={onClose} disabled={loading}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? (
+                <>
+                  <ApperIcon name="Loader2" className="w-4 h-4 mr-2 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
+                  Create Task
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default TaskFormModal

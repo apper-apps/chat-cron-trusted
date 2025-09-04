@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import ApperIcon from "@/components/ApperIcon"
+import TaskFormModal from "@/components/molecules/TaskFormModal"
 import TaskItem from "@/components/molecules/TaskItem"
 import Card from "@/components/atoms/Card"
 import Button from "@/components/atoms/Button"
@@ -13,6 +14,7 @@ import { toast } from "react-toastify"
 import tasksService from "@/services/api/tasksService"
 
 const TasksOverview = () => {
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [tasks, setTasks] = useState([])
   const [filteredTasks, setFilteredTasks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -113,10 +115,19 @@ const TasksOverview = () => {
             Manage all your operational tasks in one place
           </p>
         </div>
-        <Button>
+<Button onClick={() => setIsTaskModalOpen(true)}>
           <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
           New Task
         </Button>
+        
+        <TaskFormModal
+          isOpen={isTaskModalOpen}
+          onClose={() => setIsTaskModalOpen(false)}
+          onTaskCreated={() => {
+            // Refresh tasks after creation
+            loadTasks()
+          }}
+        />
       </div>
 
       {/* Stats Cards */}

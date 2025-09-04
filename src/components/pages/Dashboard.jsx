@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import ApperIcon from "@/components/ApperIcon"
 import MetricCard from "@/components/molecules/MetricCard"
 import ActivityItem from "@/components/molecules/ActivityItem"
+import TaskFormModal from "@/components/molecules/TaskFormModal"
 import Card from "@/components/atoms/Card"
 import Button from "@/components/atoms/Button"
 import Loading from "@/components/ui/Loading"
@@ -12,6 +13,7 @@ import activitiesService from "@/services/api/activitiesService"
 import tasksService from "@/services/api/tasksService"
 
 const Dashboard = () => {
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [metrics, setMetrics] = useState([])
   const [activities, setActivities] = useState([])
   const [recentTasks, setRecentTasks] = useState([])
@@ -85,7 +87,7 @@ const getMetricIcon = (name) => {
             <ApperIcon name="Download" className="w-4 h-4 mr-2" />
             Export Data
           </Button>
-          <Button size="sm">
+<Button size="sm" onClick={() => setIsTaskModalOpen(true)}>
             <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
             New Task
           </Button>
@@ -185,10 +187,23 @@ const getMetricIcon = (name) => {
               Quick Actions
             </h2>
             <div className="space-y-3">
-              <Button variant="ghost" className="w-full justify-start">
+<Button 
+                variant="ghost" 
+                className="w-full justify-start"
+                onClick={() => setIsTaskModalOpen(true)}
+              >
                 <ApperIcon name="Plus" className="w-4 h-4 mr-3" />
                 Create New Task
               </Button>
+              
+              <TaskFormModal
+                isOpen={isTaskModalOpen}
+                onClose={() => setIsTaskModalOpen(false)}
+                onTaskCreated={() => {
+                  // Refresh dashboard data after task creation
+                  loadDashboardData()
+                }}
+              />
               <Button variant="ghost" className="w-full justify-start">
                 <ApperIcon name="FileText" className="w-4 h-4 mr-3" />
                 Generate Report
