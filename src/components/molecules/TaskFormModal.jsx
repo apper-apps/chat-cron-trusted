@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import ApperIcon from '@/components/ApperIcon'
-import Input from '@/components/atoms/Input'
-import Select from '@/components/atoms/Select'
-import Button from '@/components/atoms/Button'
-import Card from '@/components/atoms/Card'
-import { toast } from 'react-toastify'
-import tasksService from '@/services/api/tasksService'
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import tasksService from "@/services/api/tasksService";
+import ApperIcon from "@/components/ApperIcon";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
 
-const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '' }) => {
-  const [formData, setFormData] = useState({
-    title_c: '',
-    assignee_c: '',
-    due_date_c: '',
-    priority_c: 'medium',
-    category_c: initialCategory,
-    task_type_c: 'One-off',
-    description_c: '',
+const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '', editingTask = null }) => {
+const [formData, setFormData] = useState({
+    title_c: editingTask?.title_c || '',
+    assignee_c: editingTask?.assignee_c || '',
+    due_date_c: editingTask?.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 16) : '',
+    priority_c: editingTask?.priority_c || 'medium',
+    category_c: editingTask?.category_c || initialCategory,
+    task_type_c: editingTask?.task_type_c || 'One-off',
+    description_c: editingTask?.description_c || '',
     related_processes: [],
     related_sops: []
   })
@@ -23,9 +23,37 @@ const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '' })
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const [newProcess, setNewProcess] = useState('')
-  const [newSop, setNewSop] = useState('')
+const [newSop, setNewSop] = useState('')
   const [comment, setComment] = useState('')
 
+  // Update form data when editingTask changes
+  React.useEffect(() => {
+    if (editingTask) {
+      setFormData({
+        title_c: editingTask.title_c || '',
+        assignee_c: editingTask.assignee_c || '',
+        due_date_c: editingTask.due_date_c ? new Date(editingTask.due_date_c).toISOString().slice(0, 16) : '',
+        priority_c: editingTask.priority_c || 'medium',
+        category_c: editingTask.category_c || initialCategory,
+        task_type_c: editingTask.task_type_c || 'One-off',
+        description_c: editingTask.description_c || '',
+        related_processes: [],
+        related_sops: []
+      })
+    } else {
+      setFormData({
+        title_c: '',
+        assignee_c: '',
+        due_date_c: '',
+        priority_c: 'medium',
+        category_c: initialCategory,
+        task_type_c: 'One-off',
+        description_c: '',
+        related_processes: [],
+        related_sops: []
+      })
+    }
+  }, [editingTask, initialCategory])
   const validateForm = () => {
     const newErrors = {}
     
@@ -94,7 +122,7 @@ const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '' })
     }))
   }
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault()
     
     if (!validateForm()) {
@@ -106,28 +134,39 @@ const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '' })
     
     try {
       // Format due date for API
-      const taskData = {
+const taskData = {
         ...formData,
         due_date_c: new Date(formData.due_date_c).toISOString(),
-        status_c: 'pending'
+        ...(editingTask ? {} : { status_c: 'pending' })
       }
       
-      const newTask = await tasksService.create(taskData)
+let result
+      let newTask
       
-      toast.success('Task created successfully!')
+      if (editingTask) {
+        result = await tasksService.update(editingTask.Id, taskData)
+        newTask = { ...editingTask, ...taskData }
+        toast.success('Task updated successfully!')
+      } else {
+        result = await tasksService.create(taskData)
+        newTask = result?.data || { ...taskData, Id: result?.id }
+        toast.success('Task created successfully!')
+      }
       
-      // Reset form
-      setFormData({
-        title_c: '',
-        assignee_c: '',
-        due_date_c: '',
-        priority_c: 'medium',
-        category_c: initialCategory,
-        task_type_c: 'One-off',
-        description_c: '',
-        related_processes: [],
-        related_sops: []
-      })
+      // Reset form only if creating (not editing)
+      if (!editingTask) {
+        setFormData({
+          title_c: '',
+          assignee_c: '',
+          due_date_c: '',
+          priority_c: 'medium',
+          category_c: initialCategory,
+          task_type_c: 'One-off',
+          description_c: '',
+          related_processes: [],
+          related_sops: []
+        })
+      }
       setComment('')
       setErrors({})
       
@@ -151,7 +190,9 @@ const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '' })
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-dark-surface rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Create New Task</h2>
+<h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            {editingTask ? 'Edit Task' : 'Create New Task'}
+          </h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <ApperIcon name="X" className="w-5 h-5" />
           </Button>
@@ -335,16 +376,16 @@ const TaskFormModal = ({ isOpen, onClose, onTaskCreated, initialCategory = '' })
             <Button type="button" variant="ghost" onClick={onClose} disabled={loading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+<Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <ApperIcon name="Loader2" className="w-4 h-4 mr-2 animate-spin" />
-                  Creating...
+                  {editingTask ? 'Updating...' : 'Creating...'}
                 </>
               ) : (
                 <>
-                  <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
-                  Create Task
+                  <ApperIcon name={editingTask ? "Save" : "Plus"} className="w-4 h-4 mr-2" />
+                  {editingTask ? 'Update Task' : 'Create Task'}
                 </>
               )}
             </Button>

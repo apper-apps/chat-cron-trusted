@@ -11,11 +11,11 @@ import { toast } from "react-toastify"
 import tasksService from "@/services/api/tasksService"
 
 const TasksImprove = () => {
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [editingTask, setEditingTask] = useState(null)
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-
   const loadImproveTasks = async () => {
     try {
       setLoading(true)
@@ -55,8 +55,9 @@ const TasksImprove = () => {
     }
   }
 
-  const handleEditTask = (task) => {
-    toast.info("Edit functionality would open a modal here")
+const handleEditTask = (task) => {
+    setEditingTask(task)
+    setIsTaskModalOpen(true)
   }
 
   if (loading) return <Loading />
@@ -87,14 +88,18 @@ const TasksImprove = () => {
           <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
           New Improvement Task
         </Button>
-        
-        <TaskFormModal
+<TaskFormModal
           isOpen={isTaskModalOpen}
-          onClose={() => setIsTaskModalOpen(false)}
+          onClose={() => {
+            setIsTaskModalOpen(false)
+            setEditingTask(null)
+          }}
           initialCategory="improve"
+          editingTask={editingTask}
           onTaskCreated={() => {
-            // Refresh improvement tasks after creation
+            // Refresh improvement tasks after creation or update
             loadImproveTasks()
+            setEditingTask(null)
           }}
         />
       </div>

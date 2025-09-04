@@ -11,11 +11,11 @@ import { toast } from "react-toastify"
 import tasksService from "@/services/api/tasksService"
 
 const TasksMaintain = () => {
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [editingTask, setEditingTask] = useState(null)
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-
   const loadMaintainTasks = async () => {
     try {
       setLoading(true)
@@ -55,8 +55,9 @@ const TasksMaintain = () => {
     }
   }
 
-  const handleEditTask = (task) => {
-    toast.info("Edit functionality would open a modal here")
+const handleEditTask = (task) => {
+    setEditingTask(task)
+    setIsTaskModalOpen(true)
   }
 
   if (loading) return <Loading />
@@ -87,15 +88,21 @@ const TasksMaintain = () => {
         </div>
 <Button onClick={() => setIsTaskModalOpen(true)}>
           <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
-          New Maintenance Task
+New Maintenance Task
         </Button>
         
         <TaskFormModal
           isOpen={isTaskModalOpen}
-          onClose={() => setIsTaskModalOpen(false)}
+          onClose={() => {
+            setIsTaskModalOpen(false)
+            setEditingTask(null)
+          }}
           initialCategory="maintain"
+          editingTask={editingTask}
           onTaskCreated={() => {
-            // Refresh maintenance tasks after creation
+            // Refresh maintenance tasks after creation or update
+            loadMaintainTasks()
+            setEditingTask(null)
             loadMaintainTasks()
           }}
         />

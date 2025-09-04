@@ -14,7 +14,8 @@ import { toast } from "react-toastify"
 import tasksService from "@/services/api/tasksService"
 
 const TasksOverview = () => {
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [editingTask, setEditingTask] = useState(null)
   const [tasks, setTasks] = useState([])
   const [filteredTasks, setFilteredTasks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -22,7 +23,6 @@ const TasksOverview = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [priorityFilter, setPriorityFilter] = useState("all")
-
   const loadTasks = async () => {
     try {
       setLoading(true)
@@ -85,8 +85,9 @@ const TasksOverview = () => {
     }
   }
 
-  const handleEditTask = (task) => {
-    toast.info("Edit functionality would open a modal here")
+const handleEditTask = (task) => {
+    setEditingTask(task)
+    setIsTaskModalOpen(true)
   }
 
   if (loading) return <Loading />
@@ -120,12 +121,17 @@ const TasksOverview = () => {
           New Task
         </Button>
         
-        <TaskFormModal
+<TaskFormModal
           isOpen={isTaskModalOpen}
-          onClose={() => setIsTaskModalOpen(false)}
+          onClose={() => {
+            setIsTaskModalOpen(false)
+            setEditingTask(null)
+          }}
+          editingTask={editingTask}
           onTaskCreated={() => {
-            // Refresh tasks after creation
+            // Refresh tasks after creation or update
             loadTasks()
+            setEditingTask(null)
           }}
         />
       </div>
