@@ -44,7 +44,7 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
             />
           </Button>
           
-          <Button
+<Button
             variant="ghost"
             size="sm"
             className="p-2"
@@ -58,6 +58,21 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
             className="p-2"
           >
             <ApperIcon name="Search" className="w-5 h-5" />
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            className="p-2"
+            onClick={async () => {
+              const { AuthContext } = await import('@/App')
+              const authMethods = React.useContext(AuthContext)
+              if (authMethods?.logout) {
+                authMethods.logout()
+              }
+            }}
+          >
+            <ApperIcon name="LogOut" className="w-5 h-5" />
           </Button>
         </div>
       </div>

@@ -24,31 +24,31 @@ const ToolboxItemCard = ({ item, onEdit, onDelete, onToggleStatus }) => {
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="p-3 bg-primary/10 rounded-lg">
-            <ApperIcon name={getTypeIcon(item.type)} className="w-5 h-5 text-primary" />
+<ApperIcon name={getTypeIcon(item.type_c)} className="w-5 h-5 text-primary" />
           </div>
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-              {item.name}
+{item.Name}
             </h4>
             <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
-              {item.type}
+{item.type_c}
             </p>
           </div>
         </div>
         
-        <Badge variant={item.status === "active" ? "success" : "default"} size="sm">
-          {item.status}
+<Badge variant={item.status_c === "active" ? "success" : "default"} size="sm">
+          {item.status_c}
         </Badge>
       </div>
       
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-        {item.description}
+{item.description_c}
       </p>
       
       <div className="flex items-center justify-between">
         <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
           <ApperIcon name="Clock" className="w-4 h-4 mr-1" />
-          Updated {format(new Date(item.lastUpdated), "MMM dd, yyyy")}
+Updated {format(new Date(item.last_updated_c), "MMM dd, yyyy")}
         </div>
         
         <div className="flex items-center space-x-2">
@@ -57,7 +57,7 @@ const ToolboxItemCard = ({ item, onEdit, onDelete, onToggleStatus }) => {
             variant="ghost"
             onClick={() => onToggleStatus(item.Id)}
           >
-            <ApperIcon name={item.status === "active" ? "Pause" : "Play"} className="w-4 h-4" />
+<ApperIcon name={item.status_c === "active" ? "Pause" : "Play"} className="w-4 h-4" />
           </Button>
           <Button
             size="sm"

@@ -27,16 +27,16 @@ const ActivityItem = ({ activity }) => {
 
   return (
     <div className="flex items-start space-x-3 py-3">
-      <div className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 ${getActionColor(activity.type)}`}>
-        <ApperIcon name={getActionIcon(activity.type)} className="w-4 h-4" />
+<div className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 ${getActionColor(activity.type_c)}`}>
+        <ApperIcon name={getActionIcon(activity.type_c)} className="w-4 h-4" />
       </div>
       
       <div className="flex-1 min-w-0">
         <p className="text-sm text-gray-900 dark:text-gray-100">
-          {activity.description}
+          {activity.description_c}
         </p>
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-          {format(new Date(activity.timestamp), "MMM dd, yyyy 'at' h:mm a")}
+{format(new Date(activity.timestamp_c), "MMM dd, yyyy 'at' h:mm a")}
         </p>
       </div>
     </div>

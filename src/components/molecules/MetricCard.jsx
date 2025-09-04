@@ -1,6 +1,6 @@
-import React from "react"
-import ApperIcon from "@/components/ApperIcon"
-import Card from "@/components/atoms/Card"
+import React from "react";
+import ApperIcon from "@/components/ApperIcon";
+import Card from "@/components/atoms/Card";
 
 const MetricCard = ({ title, value, unit, trend, icon, description }) => {
   const getTrendColor = () => {
