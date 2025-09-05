@@ -104,6 +104,7 @@ const sections = [
         { id: 'admin', name: 'Admin', icon: 'FileText' }
       ]
     }
+]
 
   const loadSystems = async () => {
     try {
