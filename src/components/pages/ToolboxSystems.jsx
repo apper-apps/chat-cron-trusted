@@ -21,90 +21,15 @@ const ToolboxSystems = () => {
   const [dragOverSection, setDragOverSection] = useState(null)
 
   // Kanban sections
-const sections = [
-    { 
-      id: 'market', 
-      name: 'Market', 
-      color: 'bg-blue-100 dark:bg-blue-900/20', 
-      borderColor: 'border-blue-200 dark:border-blue-800', 
-      icon: 'Target',
-      subsections: [
-        { id: 'brand-building', name: 'Brand Building', icon: 'Zap' },
-        { id: 'audience-growth', name: 'Audience Growth', icon: 'TrendingUp' },
-        { id: 'lead-nurture', name: 'Lead Nurture', icon: 'Heart' }
-      ]
-    },
-    { 
-      id: 'sell', 
-      name: 'Sell', 
-      color: 'bg-green-100 dark:bg-green-900/20', 
-      borderColor: 'border-green-200 dark:border-green-800', 
-      icon: 'DollarSign',
-      subsections: [
-        { id: 'lead-qualification', name: 'Lead Qualification', icon: 'Filter' },
-        { id: 'lead-conversion', name: 'Lead Conversion', icon: 'ArrowRight' }
-      ]
-    },
-    { 
-      id: 'customer', 
-      name: 'Customer', 
-      color: 'bg-purple-100 dark:bg-purple-900/20', 
-      borderColor: 'border-purple-200 dark:border-purple-800', 
-      icon: 'Users',
-      subsections: [
-        { id: 'experience', name: 'Experience', icon: 'Star' },
-        { id: 'fulfillment', name: 'Fulfillment', icon: 'Package' },
-        { id: 'retention', name: 'Retention', icon: 'RefreshCw' }
-      ]
-    },
-    { 
-      id: 'product', 
-      name: 'Product', 
-      color: 'bg-orange-100 dark:bg-orange-900/20', 
-      borderColor: 'border-orange-200 dark:border-orange-800', 
-      icon: 'Package',
-      subsections: [
-        { id: 'research-development', name: 'Research and Development', icon: 'Search' },
-        { id: 'logistics-supply', name: 'Logistics and Supply', icon: 'Truck' }
-      ]
-    },
-    { 
-      id: 'team', 
-      name: 'Team', 
-      color: 'bg-pink-100 dark:bg-pink-900/20', 
-      borderColor: 'border-pink-200 dark:border-pink-800', 
-      icon: 'Users2',
-      subsections: [
-        { id: 'team-curation', name: 'Team Curation', icon: 'UserPlus' },
-        { id: 'training-development', name: 'Training and Development', icon: 'GraduationCap' },
-        { id: 'comp-engagement', name: 'Comp and Engagement', icon: 'Award' }
-      ]
-    },
-    { 
-      id: 'structure', 
-      name: 'Structure', 
-      color: 'bg-indigo-100 dark:bg-indigo-900/20', 
-      borderColor: 'border-indigo-200 dark:border-indigo-800', 
-      icon: 'Building',
-      subsections: [
-        { id: 'data', name: 'Data', icon: 'Database' },
-        { id: 'tools-tech', name: 'Tools and Tech', icon: 'Settings' }
-      ]
-    },
-    { 
-      id: 'support', 
-      name: 'Support', 
-      color: 'bg-yellow-100 dark:bg-yellow-900/20', 
-      borderColor: 'border-yellow-200 dark:border-yellow-800', 
-      icon: 'HelpCircle',
-      subsections: [
-        { id: 'financial', name: 'Financial', icon: 'DollarSign' },
-        { id: 'legal', name: 'Legal', icon: 'Scale' },
-        { id: 'risk', name: 'Risk', icon: 'AlertTriangle' },
-        { id: 'admin', name: 'Admin', icon: 'FileText' }
-      ]
-    }
-]
+  const sections = [
+    { id: 'market', name: 'Market', color: 'bg-blue-100 dark:bg-blue-900/20', borderColor: 'border-blue-200 dark:border-blue-800', icon: 'Target' },
+    { id: 'sell', name: 'Sell', color: 'bg-green-100 dark:bg-green-900/20', borderColor: 'border-green-200 dark:border-green-800', icon: 'DollarSign' },
+    { id: 'customer', name: 'Customer', color: 'bg-purple-100 dark:bg-purple-900/20', borderColor: 'border-purple-200 dark:border-purple-800', icon: 'Users' },
+    { id: 'product', name: 'Product', color: 'bg-orange-100 dark:bg-orange-900/20', borderColor: 'border-orange-200 dark:border-orange-800', icon: 'Package' },
+    { id: 'team', name: 'Team', color: 'bg-pink-100 dark:bg-pink-900/20', borderColor: 'border-pink-200 dark:border-pink-800', icon: 'Users2' },
+    { id: 'structure', name: 'Structure', color: 'bg-indigo-100 dark:bg-indigo-900/20', borderColor: 'border-indigo-200 dark:border-indigo-800', icon: 'Building' },
+    { id: 'support', name: 'Support', color: 'bg-yellow-100 dark:bg-yellow-900/20', borderColor: 'border-yellow-200 dark:border-yellow-800', icon: 'HelpCircle' }
+  ]
 
   const loadSystems = async () => {
     try {
@@ -141,7 +66,7 @@ const sections = [
     setFilteredItems(filtered)
   }, [items, searchTerm, statusFilter])
 
-const getItemSection = (item) => {
+  const getItemSection = (item) => {
     try {
       const metadata = item.metadata_c ? JSON.parse(item.metadata_c) : {}
       return metadata.section || 'market'
@@ -150,31 +75,8 @@ const getItemSection = (item) => {
     }
   }
 
-  const getItemSubsection = (item) => {
-    try {
-      const metadata = item.metadata_c ? JSON.parse(item.metadata_c) : {}
-      return metadata.subsection
-    } catch {
-      return null
-    }
-  }
-
-const getItemsBySection = (sectionId) => {
+  const getItemsBySection = (sectionId) => {
     return filteredItems.filter(item => getItemSection(item) === sectionId)
-  }
-
-  const getItemsBySubsection = (sectionId, subsectionId) => {
-    return filteredItems.filter(item => 
-      getItemSection(item) === sectionId && 
-      getItemSubsection(item) === subsectionId
-    )
-  }
-
-  const getItemsWithoutSubsection = (sectionId) => {
-    return filteredItems.filter(item => 
-      getItemSection(item) === sectionId && 
-      !getItemSubsection(item)
-    )
   }
 
   const handleToggleStatus = async (id) => {
@@ -208,17 +110,17 @@ const getItemsBySection = (sectionId) => {
     e.dataTransfer.effectAllowed = 'move'
   }
 
-const handleDragOver = (e, sectionId, subsectionId = null) => {
+  const handleDragOver = (e, sectionId) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
-    setDragOverSection(subsectionId ? `${sectionId}-${subsectionId}` : sectionId)
+    setDragOverSection(sectionId)
   }
 
   const handleDragLeave = () => {
     setDragOverSection(null)
   }
 
-  const handleDrop = async (e, sectionId, subsectionId = null) => {
+  const handleDrop = async (e, sectionId) => {
     e.preventDefault()
     setDragOverSection(null)
     
@@ -226,13 +128,9 @@ const handleDragOver = (e, sectionId, subsectionId = null) => {
 
     try {
       const currentMetadata = draggedItem.metadata_c ? JSON.parse(draggedItem.metadata_c) : {}
-      const updatedMetadata = { 
-        ...currentMetadata, 
-        section: sectionId, 
-        subsection: subsectionId 
-      }
+      const updatedMetadata = { ...currentMetadata, section: sectionId }
       
-      await toolboxService.update(draggedItem.Id, {
+      const updatedItem = await toolboxService.update(draggedItem.Id, {
         metadata_c: JSON.stringify(updatedMetadata)
       })
       
@@ -242,11 +140,7 @@ const handleDragOver = (e, sectionId, subsectionId = null) => {
           : item
       ))
       
-      const targetName = subsectionId 
-        ? `${sections.find(s => s.id === sectionId)?.name} - ${sections.find(s => s.id === sectionId)?.subsections?.find(sub => sub.id === subsectionId)?.name}`
-        : sections.find(s => s.id === sectionId)?.name
-      
-      toast.success(`Moved to ${targetName}`)
+      toast.success(`Moved to ${sections.find(s => s.id === sectionId)?.name}`)
     } catch (err) {
       toast.error("Failed to move item")
     } finally {
@@ -375,7 +269,7 @@ return (
           actionLabel="Add First System"
         />
       ) : (
-<div className="overflow-x-auto pb-4">
+        <div className="overflow-x-auto">
           <div className="flex space-x-6 pb-6" style={{ minWidth: '1400px' }}>
             {sections.map((section) => {
               const sectionItems = getItemsBySection(section.id)
@@ -410,95 +304,27 @@ return (
                     </div>
                   </div>
 
-                  {/* Section Content with Subsections */}
-                  <div className="p-4 space-y-6 min-h-96">
-                    {/* Subsections */}
-                    {section.subsections.map((subsection) => {
-                      const subsectionItems = getItemsBySubsection(section.id, subsection.id)
-                      return (
-                        <div
-                          key={subsection.id}
-                          className={`border border-gray-300 dark:border-gray-600 rounded-lg p-3 bg-white/50 dark:bg-gray-800/50 ${
-                            dragOverSection === `${section.id}-${subsection.id}`
-                              ? 'border-primary border-dashed bg-primary/5'
-                              : ''
-                          } transition-colors duration-200`}
-                          onDragOver={(e) => handleDragOver(e, section.id, subsection.id)}
-                          onDragLeave={handleDragLeave}
-                          onDrop={(e) => handleDrop(e, section.id, subsection.id)}
-                        >
-                          {/* Subsection Header */}
-                          <div className="flex items-center space-x-2 mb-3">
-                            <ApperIcon name={subsection.icon} className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                            <h4 className="font-medium text-sm text-gray-800 dark:text-gray-200">
-                              {subsection.name}
-                            </h4>
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
-                              ({subsectionItems.length})
-                            </span>
-                          </div>
-                          
-                          {/* Subsection Items */}
-                          <div className="space-y-2">
-                            {subsectionItems.length === 0 ? (
-                              <div className="text-center py-4 text-gray-400 dark:text-gray-500">
-                                <p className="text-xs">Drop items here</p>
-                              </div>
-                            ) : (
-                              subsectionItems.map((item) => (
-                                <div key={item.Id}>
-                                  <ToolboxItemCard
-                                    item={item}
-                                    onEdit={handleEditItem}
-                                    onDelete={handleDeleteItem}
-                                    onToggleStatus={handleToggleStatus}
-                                    onDragStart={handleDragStart}
-                                    isDragging={draggedItem?.Id === item.Id}
-                                  />
-                                </div>
-                              ))
-                            )}
-                          </div>
-                        </div>
-                      )
-                    })}
-
-                    {/* Items without subsection */}
-                    {(() => {
-                      const unassignedItems = getItemsWithoutSubsection(section.id)
-                      return unassignedItems.length > 0 && (
-                        <div className="border border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-3 bg-gray-50/50 dark:bg-gray-700/50">
-                          <div className="flex items-center space-x-2 mb-3">
-                            <ApperIcon name="Inbox" className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                            <h4 className="font-medium text-sm text-gray-600 dark:text-gray-300">
-                              Unorganized ({unassignedItems.length})
-                            </h4>
-                          </div>
-                          <div className="space-y-2">
-                            {unassignedItems.map((item) => (
-                              <div key={item.Id}>
-                                <ToolboxItemCard
-                                  item={item}
-                                  onEdit={handleEditItem}
-                                  onDelete={handleDeleteItem}
-                                  onToggleStatus={handleToggleStatus}
-                                  onDragStart={handleDragStart}
-                                  isDragging={draggedItem?.Id === item.Id}
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )
-                    })()}
-
-                    {/* Empty section message */}
-                    {sectionItems.length === 0 && (
+                  {/* Section Content */}
+                  <div className="p-4 space-y-4 min-h-96">
+                    {sectionItems.length === 0 ? (
                       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                         <ApperIcon name={section.icon} className="w-12 h-12 mx-auto mb-3 opacity-30" />
                         <p className="text-sm">No systems in {section.name}</p>
                         <p className="text-xs mt-1">Drag items here to organize</p>
                       </div>
+                    ) : (
+                      sectionItems.map((item) => (
+                        <div key={item.Id}>
+                          <ToolboxItemCard
+                            item={item}
+                            onEdit={handleEditItem}
+                            onDelete={handleDeleteItem}
+                            onToggleStatus={handleToggleStatus}
+                            onDragStart={handleDragStart}
+                            isDragging={draggedItem?.Id === item.Id}
+                          />
+                        </div>
+                      ))
                     )}
                   </div>
                 </div>
