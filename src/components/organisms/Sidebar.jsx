@@ -4,7 +4,7 @@ import ApperIcon from "@/components/ApperIcon"
 import { cn } from "@/utils/cn"
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const navigation = [
+const navigation = [
     {
       name: "Dashboard",
       href: "/dashboard",
@@ -21,7 +21,68 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       ]
     },
     {
-      name: "Toolbox",
+      name: "Market",
+      icon: "Target",
+      children: [
+        { name: "Brand Building", href: "/market/brand-building", icon: "Award" },
+        { name: "Audience Growth", href: "/market/audience-growth", icon: "Users" },
+        { name: "Lead Nurture", href: "/market/lead-nurture", icon: "UserPlus" }
+      ]
+    },
+    {
+      name: "Sell",
+      icon: "TrendingUp",
+      children: [
+        { name: "Lead Qualification", href: "/sell/lead-qualification", icon: "Filter" },
+        { name: "Lead Conversion", href: "/sell/lead-conversion", icon: "CheckCircle" }
+      ]
+    },
+    {
+      name: "Customer",
+      icon: "Heart",
+      children: [
+        { name: "Experience", href: "/customer/experience", icon: "Star" },
+        { name: "Fulfillment", href: "/customer/fulfillment", icon: "Package" },
+        { name: "Retention", href: "/customer/retention", icon: "RefreshCw" }
+      ]
+    },
+    {
+      name: "Product",
+      icon: "Box",
+      children: [
+        { name: "Research and Development", href: "/product/research-development", icon: "Search" },
+        { name: "Logistics and Supply", href: "/product/logistics-supply", icon: "Truck" }
+      ]
+    },
+    {
+      name: "Team",
+      icon: "Users",
+      children: [
+        { name: "Team Curation", href: "/team/team-curation", icon: "UserCheck" },
+        { name: "Training and Development", href: "/team/training-development", icon: "BookOpen" },
+        { name: "Comp and Engagement", href: "/team/comp-engagement", icon: "Zap" }
+      ]
+    },
+    {
+      name: "Structure",
+      icon: "Building",
+      children: [
+        { name: "Data", href: "/structure/data", icon: "Database" },
+        { name: "Tools and Tech", href: "/structure/tools-tech", icon: "Settings" }
+      ]
+    },
+    {
+      name: "Support",
+      icon: "Shield",
+      children: [
+        { name: "Financial", href: "/support/financial", icon: "DollarSign" },
+        { name: "Legal", href: "/support/legal", icon: "Scale" },
+        { name: "Risk", href: "/support/risk", icon: "AlertTriangle" },
+        { name: "Admin", href: "/support/admin", icon: "FileText" }
+      ]
+    },
+    {
+      name: "Legacy Toolbox",
       icon: "Wrench",
       children: [
         { name: "Processes", href: "/toolbox/processes", icon: "GitBranch" },

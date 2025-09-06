@@ -11,7 +11,7 @@ class ToolboxService {
 
   async getAll() {
     try {
-      const params = {
+const params = {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
@@ -19,7 +19,11 @@ class ToolboxService {
           { field: { Name: "status_c" } },
           { field: { Name: "last_updated_c" } },
           { field: { Name: "description_c" } },
-          { field: { Name: "metadata_c" } }
+          { field: { Name: "metadata_c" } },
+          { 
+            field: { name: "kanban_subsection_c" },
+            referenceField: { field: { Name: "Name" } }
+          }
         ],
         pagingInfo: {
           limit: 100,
@@ -53,14 +57,18 @@ class ToolboxService {
   async getById(id) {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
           { field: { Name: "type_c" } },
           { field: { Name: "status_c" } },
           { field: { Name: "last_updated_c" } },
           { field: { Name: "description_c" } },
-          { field: { Name: "metadata_c" } }
+          { field: { Name: "metadata_c" } },
+          { 
+            field: { name: "kanban_subsection_c" },
+            referenceField: { field: { Name: "Name" } }
+          }
         ]
       }
       
@@ -90,14 +98,18 @@ class ToolboxService {
   async getByType(type) {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
           { field: { Name: "type_c" } },
           { field: { Name: "status_c" } },
           { field: { Name: "last_updated_c" } },
           { field: { Name: "description_c" } },
-          { field: { Name: "metadata_c" } }
+          { field: { Name: "metadata_c" } },
+          { 
+            field: { name: "kanban_subsection_c" },
+            referenceField: { field: { Name: "Name" } }
+          }
         ],
         where: [
           {
@@ -137,13 +149,14 @@ class ToolboxService {
         records: [
           {
             // Only include Updateable fields
-            Name: data.Name || data.name || '',
+Name: data.Name || data.name || '',
             Tags: data.Tags || '',
             type_c: data.type_c || data.type || '',
             status_c: data.status_c || data.status || 'active',
             last_updated_c: data.last_updated_c || data.lastUpdated || new Date().toISOString(),
             description_c: data.description_c || data.description || '',
-            metadata_c: data.metadata_c || (data.metadata ? JSON.stringify(data.metadata) : '')
+            metadata_c: data.metadata_c || (data.metadata ? JSON.stringify(data.metadata) : ''),
+            kanban_subsection_c: data.kanban_subsection_c ? parseInt(data.kanban_subsection_c) : null
           }
         ]
       }
@@ -191,11 +204,12 @@ class ToolboxService {
             Id: parseInt(id),
             // Only include Updateable fields that are being updated
             ...(data.Name !== undefined && { Name: data.Name }),
-            ...(data.Tags !== undefined && { Tags: data.Tags }),
+...(data.Tags !== undefined && { Tags: data.Tags }),
             ...(data.type_c !== undefined && { type_c: data.type_c }),
             ...(data.status_c !== undefined && { status_c: data.status_c }),
             ...(data.description_c !== undefined && { description_c: data.description_c }),
             ...(data.metadata_c !== undefined && { metadata_c: data.metadata_c }),
+            ...(data.kanban_subsection_c !== undefined && { kanban_subsection_c: data.kanban_subsection_c ? parseInt(data.kanban_subsection_c) : null }),
             last_updated_c: new Date().toISOString()
           }
         ]

@@ -130,7 +130,7 @@ ApperUI.setup(client, {
   }
   
   return (
-    <ThemeProvider>
+<ThemeProvider>
       <AuthContext.Provider value={authMethods}>
         <div className="min-h-screen bg-white dark:bg-dark-bg transition-colors duration-300">
           <Routes>
@@ -147,6 +147,41 @@ ApperUI.setup(client, {
               <Route path="tasks/react" element={<TasksReact />} />
               <Route path="tasks/maintain" element={<TasksMaintain />} />
               <Route path="tasks/improve" element={<TasksImprove />} />
+              
+              {/* Market Section */}
+              <Route path="market/brand-building" element={<Dashboard />} />
+              <Route path="market/audience-growth" element={<Dashboard />} />
+              <Route path="market/lead-nurture" element={<Dashboard />} />
+              
+              {/* Sell Section */}
+              <Route path="sell/lead-qualification" element={<Dashboard />} />
+              <Route path="sell/lead-conversion" element={<Dashboard />} />
+              
+              {/* Customer Section */}
+              <Route path="customer/experience" element={<Dashboard />} />
+              <Route path="customer/fulfillment" element={<Dashboard />} />
+              <Route path="customer/retention" element={<Dashboard />} />
+              
+              {/* Product Section */}
+              <Route path="product/research-development" element={<Dashboard />} />
+              <Route path="product/logistics-supply" element={<Dashboard />} />
+              
+              {/* Team Section */}
+              <Route path="team/team-curation" element={<Dashboard />} />
+              <Route path="team/training-development" element={<Dashboard />} />
+              <Route path="team/comp-engagement" element={<Dashboard />} />
+              
+              {/* Structure Section */}
+              <Route path="structure/data" element={<Dashboard />} />
+              <Route path="structure/tools-tech" element={<Dashboard />} />
+              
+              {/* Support Section */}
+              <Route path="support/financial" element={<Dashboard />} />
+              <Route path="support/legal" element={<Dashboard />} />
+              <Route path="support/risk" element={<Dashboard />} />
+              <Route path="support/admin" element={<Dashboard />} />
+              
+              {/* Legacy Toolbox Routes */}
               <Route path="toolbox/processes" element={<ToolboxProcesses />} />
               <Route path="toolbox/systems" element={<ToolboxSystems />} />
               <Route path="toolbox/equipment" element={<ToolboxEquipment />} />

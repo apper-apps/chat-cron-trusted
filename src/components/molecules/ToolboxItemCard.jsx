@@ -27,7 +27,7 @@ const ToolboxItemCard = ({ item, onEdit, onDelete, onToggleStatus, isDragging = 
       draggable
       onDragStart={(e) => onDragStart && onDragStart(e, item)}
     >
-      <div className="flex items-start justify-between mb-4">
+<div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="p-3 bg-primary/10 rounded-lg">
             <ApperIcon name={getTypeIcon(item.type_c)} className="w-5 h-5 text-primary" />
@@ -39,6 +39,11 @@ const ToolboxItemCard = ({ item, onEdit, onDelete, onToggleStatus, isDragging = 
             <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
               {item.type_c}
             </p>
+            {item.kanban_subsection_c && (
+              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                {item.kanban_subsection_c.Name || item.kanban_subsection_c}
+              </p>
+            )}
           </div>
         </div>
         
